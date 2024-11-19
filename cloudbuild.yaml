@@ -1,15 +1,19 @@
 steps:
+  # Build the container image
   - name: 'gcr.io/cloud-builders/docker'
     args: ['build', '-t', 'gcr.io/flaskhelloworldapp1-442123/flaskhelloworldapp1', '.']
+  
+  # Push the container image to Container Registry
   - name: 'gcr.io/cloud-builders/docker'
     args: ['push', 'gcr.io/flaskhelloworldapp1-442123/flaskhelloworldapp1']
+  
+  # Deploy the container image to Cloud Run
   - name: 'gcr.io/google.com/cloudsdktool/cloud-sdk'
     entrypoint: gcloud
     args: ['run', 'deploy', 'flaskhelloworldapp1', '--image', 'gcr.io/flaskhelloworldapp1-442123/flaskhelloworldapp1', '--region', 'us-central1', '--platform', 'managed', '--port', '80']
 
 options:
-  logging: GCS_BUCKET  # This will store logs in a Cloud Storage bucket
-  logsBucket: 'gs://your-log-bucket'  # Specify your Cloud Storage bucket for logs
+  logging: CLOUD_LOGGING_ONLY  # Send logs to Cloud Logging only (no GCS bucket)
 images:
   - gcr.io/flaskhelloworldapp1-442123/flaskhelloworldapp1
-serviceAccount: 'your-service-account@your-project.iam.gserviceaccount.com'
+
