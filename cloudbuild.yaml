@@ -9,5 +9,11 @@ steps:
 - name: 'gcr.io/google.com/cloudsdktool/cloud-sdk'
   entrypoint: gcloud
   args: ['run', 'deploy', 'flaskhelloworldapp1', '--image', 'gcr.io/flaskhelloworldapp1-442123/flaskhelloworldapp1', '--region', 'us-central1', '--platform', 'managed','--port','80']
+
 images:
 - gcr.io/flaskhelloworldapp1-442123/flaskhelloworldapp1
+
+options:
+  logging: CLOUD_LOGGING_ONLY  # Use Cloud Logging for logs
+  logs_bucket: 'gs://your-log-bucket'  # Replace with your Cloud Storage bucket URL
+serviceAccount: 'your-service-account@your-project.iam.gserviceaccount.com'
