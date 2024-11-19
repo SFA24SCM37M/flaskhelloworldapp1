@@ -8,20 +8,21 @@ ENV HOST=0.0.0.0
 # Expose the desired port
 EXPOSE 80
 
-# Update apt-get and install python3-pip
+# Install dependencies (use --no-cache-dir to avoid caching pip dependencies)
 RUN apt-get update -y && \
-    apt-get install -y python3-pip
-
-# Copy the requirements file into the container at /app
-COPY ./requirements.txt /app/requirements.txt
+    apt-get install -y python3-pip && \
+    rm -rf /var/lib/apt/lists/*  # Clean up apt cache to reduce image size
 
 # Set the working directory to /app
 WORKDIR /app
 
-# Install dependencies from the requirements file
-RUN pip install -r requirements.txt
+# Copy only the requirements file to avoid unnecessary installs when app code changes
+COPY ./requirements.txt /app/requirements.txt
 
-# Copy the entire project into the container
+# Install Python dependencies from requirements.txt
+RUN pip install --no-cache-dir -r requirements.txt
+
+# Now copy the rest of the application code
 COPY . /app
 
 # Define the command to run the application
