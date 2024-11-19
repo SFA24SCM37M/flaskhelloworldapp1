@@ -1,7 +1,7 @@
 steps:
 # Build the container image
 - name: 'gcr.io/cloud-builders/docker'
-  args: ['build', '-t', 'gcr.io/$flaskhelloworldapp1-442123/flaskhelloworldapp1', '.']
+  args: ['build', '-t', 'gcr.io/flaskhelloworldapp1-442123/flaskhelloworldapp1', '.']
 # Push the container image to Container Registry
 - name: 'gcr.io/cloud-builders/docker'
   args: ['push', 'gcr.io/flaskhelloworldapp1-442123/flaskhelloworldapp1']
