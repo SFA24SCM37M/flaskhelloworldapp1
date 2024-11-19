@@ -1,19 +1,31 @@
 steps:
-  # Build the container image
-  - name: 'gcr.io/cloud-builders/docker'
-    args: ['build', '-t', 'gcr.io/flaskhelloworldapp1-442123/flaskhelloworldapp1', '.']
-  
-  # Push the container image to Container Registry
-  - name: 'gcr.io/cloud-builders/docker'
-    args: ['push', 'gcr.io/flaskhelloworldapp1-442123/flaskhelloworldapp1']
-  
-  # Deploy the container image to Cloud Run
-  - name: 'gcr.io/google.com/cloudsdktool/cloud-sdk'
-    entrypoint: gcloud
-    args: ['run', 'deploy', 'flaskhelloworldapp1', '--image', 'gcr.io/flaskhelloworldapp1-442123/flaskhelloworldapp1', '--region', 'us-central1', '--platform', 'managed', '--port', '80']
+# Build the container image
+- name: 'gcr.io/cloud-builders/docker'
+  args: ['build', '-t', 'gcr.io/flaskhelloworldapp1-442123/flaskhelloworldapp1', '.']
+
+# Push the container image to Container Registry
+- name: 'gcr.io/cloud-builders/docker'
+  args: ['push', 'gcr.io/flaskhelloworldapp1-442123/flaskhelloworldapp1']
+
+# Deploy container image to Cloud Run
+- name: 'gcr.io/google.com/cloudsdktool/cloud-sdk'
+  entrypoint: 'gcloud'
+  args:
+    - 'run'
+    - 'deploy'
+    - 'flaskhelloworldapp1'
+    - '--image'
+    - 'gcr.io/flaskhelloworldapp1-442123/flaskhelloworldapp1'
+    - '--region'
+    - 'us-central1'
+    - '--platform'
+    - 'managed'
+    - '--port'
+    - '80'
+
+images:
+- gcr.io/flaskhelloworldapp1-442123/flaskhelloworldapp1
 
 options:
-  logging: CLOUD_LOGGING_ONLY  # Send logs to Cloud Logging only (no GCS bucket)
-images:
-  - gcr.io/flaskhelloworldapp1-442123/flaskhelloworldapp1
-
+  logging: CLOUD_LOGGING_ONLY  # You can set the logging to CLOUD_LOGGING_ONLY or specify a logs bucket
+git
